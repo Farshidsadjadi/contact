@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head><title>My Contact</title></head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>First-Name</th>
+        <th>Last-Name</th>
+        <th>Phone-Number</th>
+        <th>Age</th>
+        <th>Setting</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range $i, $contact := .MyContact}}
+    <tr>
+        <td>{{ $i }}</td>
+        <td>{{$contact.FirstName}}</td>
+        <td>{{$contact.LastName}}</td>
+        <td>{{$contact.PhoneNumber}}</td>
+        <td>{{$contact.Age}}</td>
+        <td><button type="button" id="{{.ID}}" class="delete-contact">Delete</button></td>
+    </tr>
+    {{end}}
+    </tbody>
+</table>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(".delete-contact").click(function () {
+       contact_delete = $(this);
+       Idif = $(this).attr('id');
+        $.ajax({
+            url: "/delete",
+            method: "POST",
+            data: {
+                "ID": Idif,
+            },
+            success: function (data) {
+                console.log(data)
+                $(contact_delete).parents("tr").remove()
+            },
+            error: function (xhr) {
+                console.log(xhr)
+            }
+        });
+    })
+</script>
+</html>
